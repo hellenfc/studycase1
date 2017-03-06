@@ -1,0 +1,162 @@
+<mvc:View
+	controllerName="sap.ui.demo.wt.controller.Form"
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:sample="sap.uxap.sample.ObjectPageSubSectionMultiView">
+	<Panel>
+		<HeaderContainer scrollStep="200" scrollTime="500" showDividers="true" width="50%">
+			<!-- Icons -->
+			<FlexBox class="sapUiSmallMarginBeginEnd" direction="Column" alignItems="Center">
+				<items >
+					<core:Icon src="sap-icon://customer" class="iconSize" size="3rem"/>
+					<Text text="Account" textAlign="Center"/>
+					<Text text="{/accountP}%" textAlign="Center"/>
+				</items>
+			</FlexBox>
+			<FlexBox class="sapUiSmallMarginBeginEnd" direction="Column" alignItems="Center">
+				<items >
+					<core:Icon src="sap-icon://cart-2" class="iconSize" size="3rem"/>
+					<Text text="Portfolio" textAlign="Center"/>
+					<Text text="{/portfolioP}%" textAlign="Center"/>
+				</items>
+			</FlexBox>
+			<!-- End icons -->
+			<!-- Start Progress Bar -->
+		</HeaderContainer>
+		<l:VerticalLayout class="sapUiContentPadding" width="50%">
+			<l:content textAlign="Center">
+				<ProgressIndicator class="sapUiSmallMarginBottom" percentValue="{/totalP}" showValue="false" state="Success" width="100%"/>
+				<FlexBox direction="Column" alignItems="Center">
+					<Text text="{/totalP}% Completed" textAlign="Center"/>
+				</FlexBox>
+			</l:content>
+		</l:VerticalLayout>
+		<!-- End Progress Bar -->
+	</Panel>
+	<IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContent">
+		<items>
+			<!-- ACCOUNT -->
+			<IconTabFilter text="Account">
+				<HeaderContainer>
+					<RadioButtonGroup columns="2" class="sapUiTinyMarginBeginEnd sapUiTinyMarginBottom" select="changeLabels">
+						<buttons>
+							<RadioButton id="person" text="Natural Person"/>
+							<RadioButton id="entity" text="Legal Entity"/>
+						</buttons>
+					</RadioButtonGroup>
+				</HeaderContainer>
+				<l:VerticalLayout class="sapUiContentPadding" width="50%">
+					<!-- Radios -->
+					<!-- id input -->
+					<Label text="Registration ID" labelFor="registrationId"/>
+					<Input id="registrationId" type="Number" required="true" class="sapUiSmallMarginBottom" change="addPercentageInput"/>
+					<!-- Prefix -->
+					<Label text="Prefix" labelFor="prefix"/>
+					<Select id="prefix" class="sapUiSmallMarginBottom" forceSelection="false" width="100%">
+						<core:Item key="mr" text="Mr."/>
+						<core:Item key="ms" text="Ms."/>
+						<core:Item key="mrs" text="Mrs."/>
+						<core:Item key="bank" text="Bank"/>
+						<core:Item key="Group" text="Group"/>
+					</Select>
+					<!-- Country -->
+					<Label text="Country" labelFor="prefix" required="true"/>
+					<Select items="{/places}" id="country" forceSelection="false" class="sapUiSmallMarginBottom" width="100%" change="onChange">
+						<core:Item key="{id}" text="{country}"/>
+					</Select>
+
+				</l:VerticalLayout>
+
+				<!-- Right -->
+				<l:VerticalLayout class="sapUiContentPadding" width="50%">
+					<!-- id input -->
+					<Label id="dateLabel" text="Birth Date" labelFor="datepicker"/>
+					<DatePicker id="datepicker" valueFormat="yyyyMMdd" displayFormat="short" change="handleChange" class="sapUiSmallMarginBottom"/>
+					<!-- Name -->
+					<Label id="nameLabel" text="Full name" labelFor="name"/>
+					<Input id="name" required="true" class="sapUiSmallMarginBottom" change="addPercentageInput"/>
+					<!-- State -->
+					<!-- <Text id="testing"></Text> -->
+					<Label text="State" labelFor="state" required="true"/>
+					<Select items="" id="state" enabled="false" forceSelection="false" class="sapUiSmallMarginBottom" width="100%" change="addSelect">
+						<core:Item key="" text=""/>
+					</Select>
+				</l:VerticalLayout>
+
+			</IconTabFilter>
+
+			<!-- PORTFOLIO -->
+			<IconTabFilter text="Portfolio">
+				<!-- <mvc:XMLView viewName="sap.ui.demo.wt.view.MasterDetail"/> -->
+				<content>
+					<!-- <ObjectPageSubSection title="3 blocks" mode="Collapsed"> -->
+					<l:VerticalLayout class="sapUiContentPadding" width="25%">
+						<FlexBox justifyContent="Center">
+							<Label text="Type" design="Bold"/>
+						</FlexBox>
+						<SelectList items="{/portfolio}" id="firstList" itemPress="firstListSelected">
+							<core:Item key="{id}" text="{name}"/>
+						</SelectList>
+					</l:VerticalLayout>
+
+					<l:VerticalLayout class="sapUiContentPadding" width="25%">
+						<FlexBox justifyContent="Center">
+							<Label text="Class" design="Bold"/>
+						</FlexBox>
+						<SelectList items="" id="secondList" itemPress="secondListSelected">
+							<core:Item key="" text=""/>
+						</SelectList>
+					</l:VerticalLayout>
+
+					<l:VerticalLayout class="sapUiContentPadding" width="25%">
+						<FlexBox justifyContent="Center">
+							<Label text="Product" design="Bold"/>
+						</FlexBox>
+						<SelectList items="" id="thirdList" itemPress="thirdListSelected">
+							<core:Item key="" text=""/>
+						</SelectList>
+					</l:VerticalLayout>
+
+					<l:VerticalLayout class="sapUiContentPadding" width="25%">
+						<Button type="Default" text="Add Selected" press="addToTable" ariaDescribedBy="saveButtonDescription genericButtonDescription" class="sapUiSmallMarginBeginEnd"></Button>
+					</l:VerticalLayout>
+
+					<Table id="itemsTable" inset="false" items="{/table}">
+						<columns>
+							<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+								<Text text="Type"/>
+							</Column>
+							<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+								<Text text="Class"/>
+							</Column>
+							<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+								<Text text="Product"/>
+							</Column>
+						</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{type}"/>
+								<Text text="{class}"/>
+								<Text text="{product}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+
+				</content>
+			</IconTabFilter>
+		</items>
+	</IconTabBar>
+
+	<FlexBox class="sapUiSmallMarginBeginEnd sapUiSmallMarginTopBottom" justifyContent="End">
+		<items>
+			<Button type="Accept" text="Save" press="isSaved" ariaDescribedBy="saveButtonDescription genericButtonDescription" class="sapUiSmallMarginBeginEnd"></Button>
+			<Button id="sendButton" text="Send" press="showInfo" enabled="false" class="sapUiSmallMarginBeginEnd"></Button>
+		</items>
+	</FlexBox>
+
+</mvc:View>
